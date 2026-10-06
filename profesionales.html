@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Maca Polichino Studio — Profesionales</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./css/styles.css"
+    >
+
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="topbar">
+
+        <a href="index.html" class="brand">
+
+            <div class="brand-small">
+                MACA POLICHINO
+            </div>
+
+            <div class="brand-name">
+                Studio<span>.</span>
+            </div>
+
+        </a>
+
+
+        <nav class="main-nav">
+
+            <a
+                href="index.html"
+                class="nav-link"
+            >
+                <span class="nav-icon">▣</span>
+                Agenda
+            </a>
+
+            <a
+                href="servicios.html"
+                class="nav-link"
+            >
+                <span class="nav-icon">✦</span>
+                Servicios
+            </a>
+
+            <a
+                href="profesionales.html"
+                class="nav-link active"
+            >
+                <span class="nav-icon">♟</span>
+                Profesionales
+            </a>
+
+            <button
+                type="button"
+                class="nav-link"
+            >
+                <span class="nav-icon">●</span>
+                Clientes
+            </button>
+
+            <button
+                type="button"
+                class="nav-link"
+            >
+                <span class="nav-icon">▰</span>
+                Market
+            </button>
+
+            <button
+                type="button"
+                class="nav-link"
+            >
+                <span class="nav-icon">○</span>
+                Mi cuenta
+            </button>
+
+        </nav>
+
+
+        <button
+            type="button"
+            class="logout-button"
+        >
+            Salir
+        </button>
+
+    </header>
+
+
+    <!-- =====================================================
+         ACTION BAR
+    ====================================================== -->
+
+    <section class="action-bar">
+
+        <div class="page-title">
+
+            <h1>
+                Profesionales
+            </h1>
+
+            <p>
+                Administrá las profesionales del estudio.
+            </p>
+
+        </div>
+
+
+        <div class="actions">
+
+            <button
+                type="button"
+                class="action-button primary"
+                id="createProfessionalButton"
+            >
+                + Nuevo profesional
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CONTENIDO
+    ====================================================== -->
+
+    <main class="management-content">
+
+        <section class="management-panel">
+
+            <div class="management-header">
+
+                <div>
+
+                    <span class="section-label">
+                        EQUIPO
+                    </span>
+
+                    <h2>
+                        Profesionales del estudio
+                    </h2>
+
+                </div>
+
+                <div class="management-counter">
+
+                    <strong id="professionalCount">
+                        0
+                    </strong>
+
+                    <span>
+                        profesionales
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="professionalsList"
+                class="management-list professionals-list"
+            ></div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     MODAL — PROFESIONAL
+===================================================== -->
+
+<div
+    id="professionalModal"
+    class="modal-overlay"
+>
+
+    <div class="modal small-modal">
+
+        <div class="modal-header">
+
+            <div>
+
+                <span class="modal-kicker">
+                    CONFIGURACIÓN
+                </span>
+
+                <h2 id="professionalModalTitle">
+                    Nuevo profesional
+                </h2>
+
+            </div>
+
+            <button
+                type="button"
+                class="close-modal"
+                data-close="professionalModal"
+                aria-label="Cerrar"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="professionalForm">
+
+            <div class="form-group">
+
+                <label for="professionalName">
+                    Nombre
+                </label>
+
+                <input
+                    type="text"
+                    id="professionalName"
+                    placeholder="Ej. Maca"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="professionalSpecialty">
+                    Especialidad
+                </label>
+
+                <input
+                    type="text"
+                    id="professionalSpecialty"
+                    placeholder="Ej. Manicuría"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="professionalColor">
+                    Color identificador
+                </label>
+
+                <input
+                    type="color"
+                    id="professionalColor"
+                    value="#ef668b"
+                >
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="button ghost"
+                    data-close="professionalModal"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    type="submit"
+                    class="button primary"
+                    id="professionalSubmitButton"
+                >
+                    Crear profesional
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div
+    id="toast"
+    class="toast"
+></div>
+
+
+<script src="./profesionales.js"></script>
+
+</body>
+</html>
