@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Maca Polichino Studio — Agenda</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="./css/styles.css">
+
+<style>
+    .professional-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+    }
+
+    .professional-tab {
+        border: 1px solid #eadfe3;
+        background: #fff;
+        color: #555;
+        border-radius: 999px;
+        padding: 8px 12px;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: .2s ease;
+    }
+
+    .professional-tab:hover {
+        border-color: #ef668b;
+        color: #d94d73;
+    }
+
+    .professional-tab.active {
+        background: #fff0f4;
+        border-color: #ef668b;
+        color: #d94d73;
+    }
+
+    .professional-tab-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: 6px;
+        vertical-align: middle;
+    }
+
+    @media (max-width: 600px) {
+        .professional-tabs {
+            width: 100%;
+        }
+        .professional-tab {
+            flex: 1 1 auto;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="topbar">
+
+        <div class="brand">
+            <div class="brand-small">MACA POLICHINO</div>
+            <div class="brand-name">Studio<span>.</span></div>
+        </div>
+
+        <nav class="main-nav">
+
+            <button class="nav-link active" data-section="agenda">
+                <span class="nav-icon">▣</span>
+                Agenda
+            </button>
+
+            <button class="nav-link">
+                <span class="nav-icon">♟</span>
+                Clientes
+            </button>
+
+            <button class="nav-link">
+                <span class="nav-icon">●</span>
+                Mi cuenta
+            </button>
+
+            <button class="nav-link">
+                <span class="nav-icon">▰</span>
+                Market
+            </button>
+
+        </nav>
+
+        <button class="logout-button">
+            Salir
+        </button>
+
+    </header>
+
+
+    <!-- =========================
+         ACTION BAR
+    ========================== -->
+
+    <section class="action-bar">
+
+        <div class="page-title">
+            <h1>Agenda</h1>
+            <p>Gestioná los turnos del estudio.</p>
+        </div>
+
+        <div class="actions">
+
+            <button
+                class="action-button secondary"
+                id="createServiceButton"
+            >
+                + Servicio
+            </button>
+
+            <button
+                class="action-button secondary"
+                id="createProfessionalButton"
+            >
+                + Profesional
+            </button>
+
+            <button
+                class="action-button primary"
+                id="createAppointmentButton"
+            >
+                + Crear turno
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
+    <main class="main-content">
+
+        <!-- CALENDARIO -->
+
+        <aside class="calendar-panel">
+
+            <div class="calendar-header">
+
+                <button id="previousMonth" class="month-arrow">
+                    ‹
+                </button>
+
+                <div>
+                    <div id="calendarMonth" class="calendar-month">
+                        Octubre
+                    </div>
+
+                    <div id="calendarYear" class="calendar-year">
+                        2026
+                    </div>
+                </div>
+
+                <button id="nextMonth" class="month-arrow">
+                    ›
+                </button>
+
+            </div>
+
+
+            <button id="todayButton" class="today-button">
+                Hoy
+            </button>
+
+
+            <div class="calendar-weekdays">
+
+                <span>L</span>
+                <span>M</span>
+                <span>M</span>
+                <span>J</span>
+                <span>V</span>
+                <span>S</span>
+                <span>D</span>
+
+            </div>
+
+
+            <div
+                id="calendarDays"
+                class="calendar-days"
+            ></div>
+
+
+            <div class="calendar-legend">
+
+                <div>
+                    <span class="legend-dot appointment"></span>
+                    Con turnos
+                </div>
+
+                <div>
+                    <span class="legend-dot today"></span>
+                    Hoy
+                </div>
+
+                <div>
+                    <span class="legend-dot selected"></span>
+                    Seleccionado
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- TURNOS -->
+
+        <section class="appointments-panel">
+
+            <div class="appointments-header">
+
+                <div>
+
+                    <span class="section-label">
+                        AGENDA
+                    </span>
+
+                    <h2 id="selectedDateTitle">
+                        Turnos
+                    </h2>
+
+                    <p id="selectedDateSubtitle">
+                        Seleccioná un día del calendario.
+                    </p>
+
+                </div>
+
+
+                <div class="appointment-tools">
+
+                    <div
+                        id="professionalTabs"
+                        class="professional-tabs"
+                        role="tablist"
+                        aria-label="Filtrar por profesional"
+                    ></div>
+
+                    <select id="statusFilter">
+
+                        <option value="all">
+                            Todos los estados
+                        </option>
+
+                        <option value="confirmed">
+                            Confirmados
+                        </option>
+
+                        <option value="pending">
+                            A confirmar
+                        </option>
+
+                        <option value="cancelled">
+                            Cancelados
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="appointments-summary">
+
+                <div class="summary-item">
+                    <strong id="totalAppointments">0</strong>
+                    <span>turnos</span>
+                </div>
+
+                <div class="summary-item">
+                    <strong id="confirmedAppointments">0</strong>
+                    <span>confirmados</span>
+                </div>
+
+                <div class="summary-item">
+                    <strong id="availableAppointments">0</strong>
+                    <span>disponibles</span>
+                </div>
+
+            </div>
+
+
+            <div
+                id="appointmentsList"
+                class="appointments-list"
+            ></div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     MODAL — CREAR TURNO
+===================================================== -->
+
+<div
+    id="appointmentModal"
+    class="modal-overlay"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <div>
+                <span class="modal-kicker">
+                    AGENDA
+                </span>
+
+                <h2>Crear turno</h2>
+            </div>
+
+            <button
+                class="close-modal"
+                data-close="appointmentModal"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="appointmentForm">
+
+            <div class="form-grid">
+
+                <div class="form-group full">
+
+                    <label>
+                        Nombre de la clienta
+                    </label>
+
+                    <input
+                        type="text"
+                        id="appointmentClient"
+                        placeholder="Ej. Agustina Pérez"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        WhatsApp
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="appointmentPhone"
+                        placeholder="261..."
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Profesional
+                    </label>
+
+                    <select
+                        id="appointmentProfessional"
+                        required
+                    ></select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Servicio
+                    </label>
+
+                    <select
+                        id="appointmentService"
+                        required
+                    ></select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Fecha
+                    </label>
+
+                    <input
+                        type="date"
+                        id="appointmentDate"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Hora
+                    </label>
+
+                    <input
+                        type="time"
+                        id="appointmentTime"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Duración
+                    </label>
+
+                    <select id="appointmentDuration">
+
+                        <option value="30">
+                            30 minutos
+                        </option>
+
+                        <option value="45">
+                            45 minutos
+                        </option>
+
+                        <option value="60" selected>
+                            1 hora
+                        </option>
+
+                        <option value="90">
+                            1 hora 30 min
+                        </option>
+
+                        <option value="120">
+                            2 horas
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Estado
+                    </label>
+
+                    <select id="appointmentStatus">
+
+                        <option value="confirmed">
+                            Confirmado
+                        </option>
+
+                        <option value="pending">
+                            A confirmar
+                        </option>
+
+                        <option value="cancelled">
+                            Cancelado
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label>
+                        Notas
+                    </label>
+
+                    <textarea
+                        id="appointmentNotes"
+                        rows="3"
+                        placeholder="Información adicional del turno..."
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="button ghost"
+                    data-close="appointmentModal"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    type="submit"
+                    class="button primary"
+                >
+                    Guardar turno
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MODAL — CREAR SERVICIO
+===================================================== -->
+
+<div
+    id="serviceModal"
+    class="modal-overlay"
+>
+
+    <div class="modal small-modal">
+
+        <div class="modal-header">
+
+            <div>
+                <span class="modal-kicker">
+                    CONFIGURACIÓN
+                </span>
+
+                <h2>Nuevo servicio</h2>
+            </div>
+
+            <button
+                class="close-modal"
+                data-close="serviceModal"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="serviceForm">
+
+            <div class="form-group">
+
+                <label>
+                    Nombre del servicio
+                </label>
+
+                <input
+                    type="text"
+                    id="serviceName"
+                    placeholder="Ej. Lifting de pestañas"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Profesional
+                </label>
+
+                <select
+                    id="serviceProfessional"
+                    required
+                ></select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Categoría
+                </label>
+
+                <select id="serviceCategory">
+
+                    <option value="Manos">
+                        Manos
+                    </option>
+
+                    <option value="Pies">
+                        Pies
+                    </option>
+
+                    <option value="Faciales">
+                        Faciales
+                    </option>
+
+                    <option value="Cejas">
+                        Cejas
+                    </option>
+
+                    <option value="Pestañas">
+                        Pestañas
+                    </option>
+
+                    <option value="Corporales">
+                        Corporales
+                    </option>
+
+                    <option value="Peluquería">
+                        Peluquería
+                    </option>
+
+                    <option value="Otros">
+                        Otros
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        Precio
+                    </label>
+
+                    <input
+                        type="number"
+                        id="servicePrice"
+                        placeholder="$ 0"
+                        min="0"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Duración
+                    </label>
+
+                    <select id="serviceDuration">
+
+                        <option value="30">
+                            30 min
+                        </option>
+
+                        <option value="45">
+                            45 min
+                        </option>
+
+                        <option value="60" selected>
+                            1 hora
+                        </option>
+
+                        <option value="90">
+                            1:30 hs
+                        </option>
+
+                        <option value="120">
+                            2 hs
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="button ghost"
+                    data-close="serviceModal"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    type="submit"
+                    class="button primary"
+                >
+                    Crear servicio
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MODAL — CREAR PROFESIONAL
+===================================================== -->
+
+<div
+    id="professionalModal"
+    class="modal-overlay"
+>
+
+    <div class="modal small-modal">
+
+        <div class="modal-header">
+
+            <div>
+                <span class="modal-kicker">
+                    CONFIGURACIÓN
+                </span>
+
+                <h2>Nuevo profesional</h2>
+            </div>
+
+            <button
+                class="close-modal"
+                data-close="professionalModal"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="professionalForm">
+
+            <div class="form-group">
+
+                <label>
+                    Nombre
+                </label>
+
+                <input
+                    type="text"
+                    id="professionalName"
+                    placeholder="Ej. Maca"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Especialidad
+                </label>
+
+                <input
+                    type="text"
+                    id="professionalSpecialty"
+                    placeholder="Ej. Manicuría"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Color identificador
+                </label>
+
+                <input
+                    type="color"
+                    id="professionalColor"
+                    value="#e95b83"
+                >
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="button ghost"
+                    data-close="professionalModal"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    type="submit"
+                    class="button primary"
+                >
+                    Crear profesional
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div
+    id="toast"
+    class="toast"
+></div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
